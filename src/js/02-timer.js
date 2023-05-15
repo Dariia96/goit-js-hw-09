@@ -11,9 +11,9 @@ const minutesValue = document.querySelector("[data-minutes]");
 const secondsValue = document.querySelector("[data-seconds]");
 const value = document.querySelector(".value");
 
-const currentDateInMs = Date.now(); 
-let timerId = null;
 
+let timerId = null;
+ const currentDateInMs = Date.now(); 
 
 
 const options = {
@@ -23,41 +23,38 @@ const options = {
     minuteIncrement: 1,
     onClose(selectedDates) {
         const targetDate = selectedDates[0];
-        const targetDateInMs = targetDate.getTime();
-        
+              
         if (targetDate <= currentDateInMs) {
             window.alert("Please choose a date in the future");
         }
         else {
             startBtn.disabled = false;
-            startBtn.addEventListener("click", function () {
-                timerId = setInterval(() => {
-                    const currentDateInMs = Date.now(); 
-                    const distanceToTargetDate = targetDateInMs - currentDateInMs;
-                    
-                    convertMs(distanceToTargetDate);
-                    if (distanceToTargetDate === 0) {
-                    
-                    clearInterval(timerId)
-                }
-                }, 1000);
-         
-                
-            });
-            
-
         };
-    
+        
     console.log(selectedDates[0]);
 },
 };
 
 
 
-
+startBtn.addEventListener("click", function () {
+                timerId = setInterval(() => {
+                    const targetDateInMs = new Date(inputdate.value);
+                    const distanceToTargetDate = targetDateInMs - Date.now(); 
+                    
+                    const time = convertMs(distanceToTargetDate);
+                    updateClock (time);
+                    if (distanceToTargetDate <= 1000) {
+                    
+                    clearInterval(timerId)
+                }
+                }, 1000);    
+            });
 
 
 flatpickr(inputdate, options);
+
+
 
 function convertMs(ms) {
     
@@ -88,8 +85,15 @@ function convertMs(ms) {
     
 }
 
-function addLeadingZero() {
+function addLeadingZero(value) {
 
-    value.toString().padStart(2, "0");
+    return String(value).padStart(2, "0");
    
 };
+
+function updateClock({ days, hours, minutes, seconds }) {
+    daysValue.textContent = addLeadingZero(days);
+    hoursValue.innerText = addLeadingZero(hours);
+    minutesValue.innerText = addLeadingZero(minutes);
+    secondsValue.innerText = addLeadingZero(seconds);
+}
