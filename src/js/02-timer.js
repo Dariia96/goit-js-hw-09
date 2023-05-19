@@ -11,7 +11,8 @@ const minutesValue = document.querySelector("[data-minutes]");
 const secondsValue = document.querySelector("[data-seconds]");
 const value = document.querySelector(".value");
 
-
+startBtn.disabled = false;
+    inputdate.disabled = false;
 let timerId = null;
  const currentDateInMs = Date.now(); 
 
@@ -35,9 +36,9 @@ const options = {
 },
 };
 
-
-
-startBtn.addEventListener("click", function () {
+function countingToTargetDate() {
+    startBtn.disabled = true;
+    inputdate.disabled = true;
                 timerId = setInterval(() => {
                     const targetDateInMs = new Date(inputdate.value);
                     const distanceToTargetDate = targetDateInMs - Date.now(); 
@@ -49,7 +50,9 @@ startBtn.addEventListener("click", function () {
                     clearInterval(timerId)
                 }
                 }, 1000);    
-            });
+            }
+
+startBtn.addEventListener("click", countingToTargetDate );
 
 
 flatpickr(inputdate, options);

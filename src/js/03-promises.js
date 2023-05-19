@@ -17,12 +17,13 @@ function createPromise(position, delay) {
   
     
 }
-
-form.addEventListener("submit", function ( event) {
+function createPromisesChain (event) {
   event.preventDefault();  
   const amount = amountInput.value;
   const step = stepInput.value;
-  
+  if (amount <= 0 | step < 0 | delayInput.value < 0) {
+   window.alert(`Please fill up the form correctly`)
+  } 
   
   for (let position = 1; position <= amount; position++) {
   let delay = Number(delayInput.value) + Number((position - 1 ) * step) ;
@@ -36,6 +37,8 @@ form.addEventListener("submit", function ( event) {
           console.log(`❌ Rejected promise ${position} in ${delay}ms`);
       })
   }
-  })
+}
+  
+form.addEventListener("submit", createPromisesChain)
 
 
